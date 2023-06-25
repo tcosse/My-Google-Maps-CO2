@@ -27,7 +27,7 @@ google:
   credentials: <%= Rails.root.join(ENV['GOOGLE_APPLICATION_CREDENTIALS']) %>
   bucket: mymaps-co2-bucket
 
-google-dev:
+google_dev:
   service: GCS
   project: my-maps-co2
   credentials: <%= Rails.root.join(ENV['GOOGLE_APPLICATION_CREDENTIALS']) %>

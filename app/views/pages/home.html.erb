@@ -1,1 +1,4 @@
-<input type="file" id="takeout-file" name="takeout-file" data-controller='file-upload' data-action='input->file-upload#fileLoaded'>
+<%= form_with url:"user/#{current_user.id}", method: :patch do |form| %>
+  <%= form.file_field :takeout_file %>
+  <%= form.submit 'Send File' %>
+<% end %>
