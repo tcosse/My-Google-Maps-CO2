@@ -70,3 +70,9 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+#dotenv-rails is a gem to set environment variables when the rails project is bootstraped
+gem "dotenv-rails"
+
+# Allows to upload and retrieve files from Google Cloud Storage
+gem "google-cloud-storage", "~> 1.8", require: false
