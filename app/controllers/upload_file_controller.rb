@@ -22,17 +22,19 @@ class UploadFileController < ApplicationController
       puts "Adding Json data of month #{monthly_data[:filename]} to DB"
       monthly_data[:data]['timelineObjects'][0].each do |activities|
         if activities.include?('activitySegment')
-          pp activities[1]
-          start_location = Location.create!(
-            latitude: activities['startLocation']['latitude'],
-            longitude: activities['startLocation']['longitude'])
-          end_location = Location.create!(
-            latitude: activities['endLocation']['latitude'],
-            longitude: activities['endLocation']['longitude'])
+          activity_data = activities[1]
+          pp activity_data
+          # start_location = Location.create!(
+          #   latitude: activity_data['startLocation']['latitude'],
+          #   longitude: activities['startLocation']['longitude'])
+          # end_location = Location.create!(
+          #   latitude: activities['endLocation']['latitude'],
+          #   longitude: activities['endLocation']['longitude'])
           # Trip.create!(
           #   start_time: activities['duration']['latitude']
           #   end_time: activities['duration']['latitude']
           # )
+        end
       end
     end
   end
