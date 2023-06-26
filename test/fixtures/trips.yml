@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_time: 2023-06-26 16:02:26
+  end_time: 2023-06-26 16:02:26
+  distance: 
+  activity_type: MyString
+  confidence: MyString
+
+two:
+  start_time: 2023-06-26 16:02:26
+  end_time: 2023-06-26 16:02:26
+  distance: 
+  activity_type: MyString
+  confidence: MyString
