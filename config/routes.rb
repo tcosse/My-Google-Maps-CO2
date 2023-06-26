@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  root "pages#home"
-  patch 'user/:id', to: 'upload_file#attach_file_to_user'
+  root 'pages#home'
+  post 'takeout', to: 'upload_file#process_takeout'
   get 'graph', to: 'pages#graph'
 end
