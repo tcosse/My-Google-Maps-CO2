@@ -11,7 +11,6 @@ class UploadFileController < ApplicationController
     # Read Zip Data and populate DataBase using Jsons
     takeout_file = params[:takeout_file].tempfile
     compiled_data = read_zip_file(takeout_file)
-    require 'pp'
     # pp data
     insert_into_db(compiled_data)
   end
@@ -24,7 +23,16 @@ class UploadFileController < ApplicationController
       monthly_data[:data]['timelineObjects'][0].each do |activities|
         if activities.include?('activitySegment')
           pp activities[1]
-        end
+          start_location = Location.create!(
+            latitude: activities['startLocation']['latitude'],
+            longitude: activities['startLocation']['longitude'])
+          end_location = Location.create!(
+            latitude: activities['endLocation']['latitude'],
+            longitude: activities['endLocation']['longitude'])
+          # Trip.create!(
+          #   start_time: activities['duration']['latitude']
+          #   end_time: activities['duration']['latitude']
+          # )
       end
     end
   end
