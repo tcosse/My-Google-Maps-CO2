@@ -1,6 +1,4 @@
-<%= form_with url:"takeout", method: :post do |form| %>
-  <%= form.file_field :takeout_file %>
-  <%= end %>
-<%#= simple_form_for(current_user) do |f| %>
-  <%#= f.input :takeout_file, as: :file%>
-<%# end %>
+<%= form_with data: {controller: 'upload', action: 'submit->upload#fileLoaded'} do |form| %>
+  <%= form.file_field :takeout_file, 'data-upload-target': 'file' %>
+  <%= form.submit 'Send File' %>
+<% end %>
