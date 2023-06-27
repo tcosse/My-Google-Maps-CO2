@@ -71,6 +71,7 @@ GEM
     autoprefixer-rails (10.4.13.0)
       execjs (~> 2)
     bcrypt (3.1.19)
+    benchmark (0.2.1)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -308,6 +309,7 @@ PLATFORMS
 
 DEPENDENCIES
   autoprefixer-rails
+  benchmark
   bootsnap
   bootstrap (~> 5.2)
   capybara

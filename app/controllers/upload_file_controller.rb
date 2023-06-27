@@ -1,17 +1,21 @@
 require 'zip'
 require 'json'
 require 'pp'
+require 'benchmark'
 
 class UploadFileController < ApplicationController
 
   def process_takeout
-    # Upload the file to google cloud using active storage
-    # current_user.takeout_file.attach(params[:takeout_file])
-
-    # Read Zip Data and populate DataBase using Jsons
-    takeout_file = params[:takeout_file].tempfile
-    compiled_data = read_zip_file(takeout_file)
-    insert_into_db(compiled_data)
+    puts 'uploadfile', Benchmark.measure {
+      # Upload the file to google cloud using active storage
+      current_user.takeout_file.attach(params[:takeout_file])
+    }
+    puts 'Parsing and inserting data to db', Benchmark.measure {
+      # Read Zip Data and populate DataBase using Jsons
+      takeout_file = params[:takeout_file].tempfile
+      @compiled_data = read_zip_file(takeout_file)
+      insert_into_db(@compiled_data)
+    }
   end
 
   private
