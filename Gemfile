@@ -83,7 +83,4 @@ gem "bootstrap", "~> 5.2"
 gem "devise"
 gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"
-
-gem 'rubyzip'
-
-gem 'benchmark'
+# gem "simple_form", github: "heartcombo/simple_form"

@@ -12,5 +12,5 @@ export default class extends Controller {
 
   //   // fetch(url)
   // }
-  
+
 }

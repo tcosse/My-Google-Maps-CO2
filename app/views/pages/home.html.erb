@@ -1,4 +1,6 @@
-<%= form_with url:"takeout", method: :post do |form| %>
-  <%= form.file_field :takeout_file %>
-  <%= form.submit 'Send File' %>
+<%#= form_with url:"takeout", method: :post do |form| %>
+  <%#= form.file_field :takeout_file %>
+  <%#= form.submit 'Send File' %>
+<%= simple_form_for(current_user) do |f| %>
+  <%= f.input :takeout_file, as: :file%>
 <% end %>
