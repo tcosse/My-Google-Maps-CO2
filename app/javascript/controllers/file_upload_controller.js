@@ -6,11 +6,11 @@ export default class extends Controller {
     console.log("file uploader")
   }
 
-  // fileLoaded() {
-  //   // console.log('file loaded')
-  //   // console.log(this.element.file)
+  fileLoaded() {
+    console.log('file loaded')
+    console.log(this.element.file)
 
-  //   // fetch(url)
-  // }
+    fetch(url)
+  }
 
 }
