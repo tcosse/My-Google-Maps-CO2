@@ -4,8 +4,6 @@ class Trip < ApplicationRecord
   validates   :start_time,
               :end_time,
               :distance,
-              :activity_type,
-              :confidence,
               :start_location_id,
               :end_location_id,
               presence: true
