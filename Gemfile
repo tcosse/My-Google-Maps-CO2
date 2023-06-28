@@ -75,7 +75,7 @@ end
 gem "dotenv-rails"
 
 # Allows to upload and retrieve files from Google Cloud Storage
-gem "google-cloud-storage", "~> 1.8", require: false
+# gem "google-cloud-storage", "~> 1.8", require: false
 
 gem "bootstrap", "~> 5.2"
 gem "devise"
