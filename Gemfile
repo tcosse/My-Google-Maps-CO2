@@ -75,10 +75,14 @@ end
 gem "dotenv-rails"
 
 # Allows to upload and retrieve files from Google Cloud Storage
-# gem "google-cloud-storage", "~> 1.8", require: false
+gem "google-cloud-storage", "~> 1.8", require: false
 
 gem "bootstrap", "~> 5.2"
 gem "devise"
 gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"
 # gem "simple_form", github: "heartcombo/simple_form"
+gem "chartkick"
+gem "groupdate"
+gem "sidekiq"
+gem "sidekiq-failures"

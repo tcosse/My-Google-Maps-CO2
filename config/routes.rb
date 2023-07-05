@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root 'pages#home'
-  post 'takeout', to: 'upload_file#process_takeout'
+  post 'takeout', to: 'files#process_takeout'
   get 'graph', to: 'pages#graph'
+  # require "sidekiq/web"
+  # authenticate :user, ->(user) { user.admin? } do
+  #   mount Sidekiq::Web => '/sidekiq'
+  # end
 end

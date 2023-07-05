@@ -1,4 +1,11 @@
-<%= form_with data: {controller: 'upload', action: 'submit->upload#fileLoaded'} do |form| %>
-  <%= form.file_field :takeout_file, 'data-upload-target': 'file' %>
-  <%= form.submit 'Send File' %>
-<% end %>
+<%#= form_with data: {controller: 'upload', action: 'submit->upload#fileLoaded'}, method: :get do |form| %>
+  <%#= form.file_field :takeout_file, 'data-upload-target': 'file' %>
+  <%#= form.submit 'Send File' %>
+<%# end %>
+<input type="file" id="takout-file" data-controller='upload' data-action='input->upload#fileLoaded'>
+<%#= form_with url:"takeout", method: :post do |form| %>
+<%#= form_with url:"takeout", method: :post do |form| %>
+  <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <%#= form.file_field :takeout_file %>
+  <%#= form.submit 'Send File' %>
+<%# end %>

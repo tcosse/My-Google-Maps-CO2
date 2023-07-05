@@ -26,3 +26,5 @@ pin "setimmediate", to: "https://ga.jspm.io/npm:setimmediate@1.0.5/setImmediate.
 pin "string_decoder", to: "https://ga.jspm.io/npm:string_decoder@1.1.1/lib/string_decoder.js"
 pin "util", to: "https://ga.jspm.io/npm:@jspm/core@2.0.1/nodelibs/browser/util.js"
 pin "util-deprecate", to: "https://ga.jspm.io/npm:util-deprecate@1.0.2/browser.js"
+pin "chartkick", to: "chartkick.js"
+pin "Chart.bundle", to: "Chart.bundle.js"
