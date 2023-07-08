@@ -2,7 +2,10 @@
   <%#= form.file_field :takeout_file, 'data-upload-target': 'file' %>
   <%#= form.submit 'Send File' %>
 <%# end %>
-<input type="file" id="takout-file" data-controller='upload' data-action='input->upload#fileLoaded'>
+<div data-controller='upload' >
+  <input type="file" id="takout-file" data-upload-target='file' data-action='input->upload#fileLoaded'>
+  <canvas id="myChart" data-upload-target="chart"></canvas>
+</div>
 <%#= form_with url:"takeout", method: :post do |form| %>
 <%#= form_with url:"takeout", method: :post do |form| %>
   <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
