@@ -24,7 +24,6 @@ export default class extends Controller {
     });
   }
 
-
 }
 
 function getZippedData(zipfile) {
@@ -72,7 +71,6 @@ function getZippedData(zipfile) {
   });
 }
 
-
 function groupAndSumByProperties(data, groupByProperties, sumProperty) {
   const groupedSum = data.reduce((acc, obj) => {
     const key = groupByProperties.map(prop => obj[prop]).join('-');
@@ -96,30 +94,13 @@ function groupAndSumByProperties(data, groupByProperties, sumProperty) {
   return cleanData(result);
 }
 
-// function groupByActivity(data){
-//   return data.reduce((acc, cur) => {
-//     acc[cur['activity']] = acc[cur['activity']] || []; // if the key is new, initiate its value to an array, otherwise keep its own array value
-//     acc[cur['activity']].push({[cur['year']]: cur['distance']});
-//     return acc;
-//   }, {})
-// }
 function groupByActivity(data){
   return data.reduce((acc, cur) => {
     acc[cur['activity']] = acc[cur['activity']] || {}; // if the key is new, initiate its value to an object, otherwise keep its own array value
-    acc[cur['activity']][cur['year']]= cur['distance'];
+    acc[cur['activity']][cur['year']] = cur['distance'];
     return acc;
   }, {})
 }
-
-// function sortByProperties(data, sortByProperties) {
-//   return data.sort((a, b) => {
-//     for (let prop of sortByProperties) {
-//       if (a[prop] < b[prop]) return -1;
-//       if (a[prop] > b[prop]) return 1;
-//     }
-//     return 0;
-//   });
-// }
 
 function cleanData(data){
   const cleanedData = []
@@ -142,7 +123,7 @@ function minMax(data){
 }
 
 function arrayRange(start, stop) {
-  const array=[]
+  const array = []
   for (let i = start; i < (stop+ 1); i++){
     array.push(i)
   }
@@ -176,19 +157,35 @@ function generateChartData(distanceByActivityAndYear) {
       label: activity,
       data: YearlyArray(groupedByActivityData[activity], minYear, maxYear),
       borderWidth: 1,
+      stack: 'Activities'
     })
   })
   return {labels: arrayRange(minYear, maxYear), datasets: datasets};
 }
+
 
 function createBarChart(chartCanvas, data) {
   new Chart(chartCanvas, {
     type: 'bar',
     data: generateChartData(data),
     options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Total Distances by Activity Types'
+        },
+      },
+      responsive: true,
+      interaction: {
+        intersect: false,
+        mode: 'myCustomMode'
+      },
       scales: {
+        x: {
+          stacked: true,
+        },
         y: {
-          beginAtZero: true
+          stacked: true
         }
       }
     }
