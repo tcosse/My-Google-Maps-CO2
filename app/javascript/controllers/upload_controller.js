@@ -9,34 +9,22 @@ export default class extends Controller {
 
   connect() {
     console.log('file uploader')
-    const fruits = new Map([
-      ["apples", "hello"],
-      ["bananas", 300],
-      ["oranges", 200]
-    ]);
-    const testMap2 = new Map()
-    testMap2.set('hello','world')
-    console.log(fruits)
-    console.log(testMap2)
   }
 
   fileLoaded(event) {
     event.preventDefault()
     console.log('file loaded')
     const zipfile = this.fileTarget.files[0]
-    getZippedData(zipfile).then(data => {
-      console.log(data)
-      let yearlyActivityDistance = groupAndSumByProperties(data, ["activity", "year"], "distance")
-      console.log(yearlyActivityDistance)
-      yearlyActivityDistance = cleanData(yearlyActivityDistance)
-      console.log(yearlyActivityDistance)
-      console.log('minMax',minMax(yearlyActivityDistance))
-      const groupedByActivityData = groupByActivity(yearlyActivityDistance)
-      console.log(groupedByActivityData)
-      console.log(Object.keys(groupedByActivityData))
-      console.log(generateChartData(groupedByActivityData))
+    getZippedData(zipfile).then(compiledData => {
+      console.log(compiledData)
+      const distanceByActivityAndYear = groupAndSumByProperties(compiledData, ["activity", "year"], "distance")
+      console.log(distanceByActivityAndYear)
+      console.log('minMax', minMax(distanceByActivityAndYear))
+      console.log(createBarChart(this.chartTarget, distanceByActivityAndYear))
     });
   }
+
+
 }
 
 function getZippedData(zipfile) {
@@ -85,83 +73,6 @@ function getZippedData(zipfile) {
 }
 
 
-// function groupBy(data, key){
-//   return data.reduce((acc, cur) => {
-//     acc[cur[key]] = acc[cur[key]] || []; // if the key is new, initiate its value to an array, otherwise keep its own array value
-//     acc[cur[key]].push(cur);
-//     return acc;
-//   }, {})
-// }
-
-function groupByActivity(data){
-  return data.reduce((acc, cur) => {
-    acc[cur['activity']] = acc[cur['activity']] || []; // if the key is new, initiate its value to an array, otherwise keep its own array value
-    acc[cur['activity']].push({[cur['year']]: cur['distance']});
-    return acc;
-  }, {})
-}
-
-function minMax(data){
-  const firstElement = data[0]
-  let maxYear = firstElement['year']
-  let minYear = firstElement['year']
-  data.forEach(element => {
-    if (element['year'] > maxYear) {maxYear = element['year']}
-    if (element['year'] < minYear) {minYear = element['year']}
-  })
-  return {min: minYear, max: maxYear}
-}
-
-function arrayRange(start, stop) {
-  Array.from({ length: (stop - start)}, (value, index) => start + index);
-}
-
-function YearlyArray(transportData, minYear, maxYear) {
-  const YearlyDataArray = []
-  for (let year = minYear; year < (maxYear + 1); year++) {
-    if (transportData.hasOwnProperty(year)) {
-      YearlyDataArray.push(transportData[year])
-    } else {
-      YearlyDataArray.push(0)
-    }
-  }
-  return YearlyDataArray
-}
-
-
-
-// function groupPopertiesandSum(data, property1, property2, propertyToSum){
-//   return data.reduce((acc, cur) => {
-//     acc[cur[property1]] = acc[cur[property1]] || {}; // if the key is new, initiate its value, other wise keep the value
-//     acc[cur[property1]][cur[property2]] = (acc[cur[property1]][cur[property2]] + cur[propertyToSum]) || cur[propertyToSum]; // if the key is new, initiate its value to the property to sum, otherwise keep its own value
-//     return acc;
-//   }, {})
-// }
-
-// function totalDistancesByTransportationAndMonth(data){
-//   // This function returns a two layer map
-//   // First, lets create an initial Month Map with all its values at 0
-//   const initialMap = new Map()
-//   monthList.forEach((month)=> initialMap.set(month, 0))
-//   return data.reduce((acc, cur) => {
-//       acc.set(cur['activity'], acc.get(cur['activity']) || initialMap); // if the key is new, initiate its value, other wise keep the value
-//       acc.get(cur['activity']).set(cur['month'],((acc.get(cur['activity']).get(cur['month']) + cur['distance']) || cur['distance'])) ; // if the key is new, initiate its value to the property to sum, otherwise keep its own value
-//       return acc;
-//     }, new Map())
-//   }
-
-  // function totalDistancesByTransportationAndYear(data){
-  // This function returns a two layer map
-  // First, lets create an initial Month Map with all its values at 0
-  // const initialMap = new Map()
-  // return data.reduce((acc, cur) => {
-  //     acc.set(cur['activity'], acc.get(cur['activity']) || initialMap); // if the key is new, initiate its value, other wise keep the value
-  //     acc.get(cur['activity']).set(cur['year'],((acc.get(cur['activity']).get(cur['year']) + cur['distance']) || cur['distance'])) ; // if the key is new, initiate its value to the property to sum, otherwise keep its own value
-  //     return acc;
-  //   }, new Map())
-  // }
-
-
 function groupAndSumByProperties(data, groupByProperties, sumProperty) {
   const groupedSum = data.reduce((acc, obj) => {
     const key = groupByProperties.map(prop => obj[prop]).join('-');
@@ -182,18 +93,33 @@ function groupAndSumByProperties(data, groupByProperties, sumProperty) {
   }, {});
 
   const result = Object.values(groupedSum);
-  return result;
+  return cleanData(result);
 }
 
-function sortByProperties(data, sortByProperties) {
-  return data.sort((a, b) => {
-    for (let prop of sortByProperties) {
-      if (a[prop] < b[prop]) return -1;
-      if (a[prop] > b[prop]) return 1;
-    }
-    return 0;
-  });
+// function groupByActivity(data){
+//   return data.reduce((acc, cur) => {
+//     acc[cur['activity']] = acc[cur['activity']] || []; // if the key is new, initiate its value to an array, otherwise keep its own array value
+//     acc[cur['activity']].push({[cur['year']]: cur['distance']});
+//     return acc;
+//   }, {})
+// }
+function groupByActivity(data){
+  return data.reduce((acc, cur) => {
+    acc[cur['activity']] = acc[cur['activity']] || {}; // if the key is new, initiate its value to an object, otherwise keep its own array value
+    acc[cur['activity']][cur['year']]= cur['distance'];
+    return acc;
+  }, {})
 }
+
+// function sortByProperties(data, sortByProperties) {
+//   return data.sort((a, b) => {
+//     for (let prop of sortByProperties) {
+//       if (a[prop] < b[prop]) return -1;
+//       if (a[prop] > b[prop]) return 1;
+//     }
+//     return 0;
+//   });
+// }
 
 function cleanData(data){
   const cleanedData = []
@@ -205,19 +131,60 @@ function cleanData(data){
   return cleanedData;
 }
 
+function minMax(data){
+  let maxYear = data[0]['year']
+  let minYear = data[0]['year']
+  data.forEach(element => {
+    if (element['year'] > maxYear) {maxYear = element['year']}
+    if (element['year'] < minYear) {minYear = element['year']}
+  })
+  return [minYear, maxYear]
+}
 
-function create_bar_chart(data) {
+function arrayRange(start, stop) {
+  const array=[]
+  for (let i = start; i < (stop+ 1); i++){
+    array.push(i)
+  }
+  return array
+}
 
-  new Chart(this.chartTarget, {
+function YearlyArray(distancesByYear, minYear, maxYear) {
+  const YearlyDataArray = []
+  console.log(distancesByYear)
+  for (let year = minYear; year < (maxYear + 1); year++) {
+    console.log(year)
+    if (distancesByYear.hasOwnProperty(year)) {
+      YearlyDataArray.push(distancesByYear[year])
+    } else {
+      YearlyDataArray.push(0)
+    }
+  }
+  return YearlyDataArray
+}
+
+function generateChartData(distanceByActivityAndYear) {
+  const groupedByActivityData = groupByActivity(distanceByActivityAndYear)
+  const activities = Object.keys(groupedByActivityData)
+  const datasets = []
+  const [minYear, maxYear] = minMax(distanceByActivityAndYear)
+  console.log(groupedByActivityData)
+  console.log(activities)
+  activities.sort().forEach((activity)=> {
+    // Object keys returns an array of the object's key, that is to say all the activities, which we then sort alphabetically and iterate through
+    datasets.push({
+      label: activity,
+      data: YearlyArray(groupedByActivityData[activity], minYear, maxYear),
+      borderWidth: 1,
+    })
+  })
+  return {labels: arrayRange(minYear, maxYear), datasets: datasets};
+}
+
+function createBarChart(chartCanvas, data) {
+  new Chart(chartCanvas, {
     type: 'bar',
-    data: {
-      labels: 'a modifier',
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
+    data: generateChartData(data),
     options: {
       scales: {
         y: {
@@ -226,19 +193,4 @@ function create_bar_chart(data) {
       }
     }
   });
-}
-
-
-function generateChartData(data) {
-  const datasets = []
-  const [minYear, maxYear] = minMax(data)
-  Object.keys(data).sort().forEach((key)=> {
-    // Object keys returns an array of the object's key, that is to say all the activities, which we then sort alphabetically and iterate through
-    datasets.push({
-      label: key,
-      data: YearlyArray(data[key], minYear, maxYear),
-      borderWidth: 1,
-    })
-  })
-  return {labels: arrayRange(minYear, maxYear), datasets: datasets};
 }
